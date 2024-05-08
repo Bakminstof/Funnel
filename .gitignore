@@ -168,4 +168,4 @@ cython_debug/
 *.db
 *.session
 postgres/data/*
-.sql
+*.sql
