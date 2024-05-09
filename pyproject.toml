@@ -1,0 +1,59 @@
+[tool.poetry]
+name = "testapp"
+version = "0.1.0"
+description = ""
+authors = ["adnrey <Bakminstof@yandex.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pyrogram = "^2.0.106"
+tgcrypto = "^1.2.5"
+sqlalchemy = "^2.0.30"
+asyncpg = "^0.29.0"
+alembic = "^1.13.1"
+uvloop = "^0.19.0"
+
+[tool.poetry.group.dev.dependencies]
+isort = "^5.12.0"
+flake8 = "^6.1.0"
+flake8-bugbear = "^23.7.10"
+flake8-pie = "^0.16.0"
+mypy = "^1.4.1"
+pep8-naming = "^0.13.3"
+pylint = "^2.17.5"
+flake8-black = "^0.3.6"
+flake8-use-pathlib = "^0.3.0"
+flake8-print = "^5.0.0"
+flake8-scream = "^0.1.0"
+flake8-simplify = "^0.20.0"
+flake8-expression-complexity = "^0.0.11"
+flake8-eradicate = "^1.5.0"
+flake8-commas = "^2.1.0"
+flake8-cognitive-complexity = "^0.1.0"
+flake8-builtins = "^2.1.0"
+flake8-annotations = "^3.0.1"
+flake8-annotations-coverage = "^0.0.6"
+flake8-adjustable-complexity = "^0.0.6"
+flake8-json = "^23.7.0"
+
+[tool.black]
+line-length = 90
+target-version = ['py311']
+extend-exclude = '''
+(
+  migrations   # Django DB migrations
+)
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 90
+multi_line_output = 3
+skip_gitignore = true
+skip_glob = ["**/migrations/*", "**/versions/*"]
+src_paths = ["./src"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

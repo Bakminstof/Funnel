@@ -1,0 +1,24 @@
+DO
+$$
+BEGIN
+   IF NOT EXISTS (SELECT extname FROM pg_catalog.pg_extension WHERE extname = 'dblink')
+   THEN
+     CREATE EXTENSION dblink;
+   END IF;
+
+   IF NOT EXISTS (SELECT FROM pg_database WHERE datname = 'funnel_db')
+   THEN
+      CREATE ROLE funnel_client WITH LOGIN CREATEDB;
+      ALTER USER funnel_client WITH PASSWORD 'SIMPLE_USER_PASSWORD';
+
+      PERFORM dblink_exec(
+      'user=ADMIN password=SIMPLE_ADMIN_PASSWORD dbname=' || current_database(),
+        'CREATE DATABASE funnel_db'
+      );
+
+      GRANT ALL ON DATABASE funnel_db TO funnel_client;
+
+      ALTER DATABASE funnel_db OWNER TO funnel_client;
+   END IF;
+END;
+$$

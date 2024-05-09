@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  client:
+    container_name: client_con
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - ./env/prod.env
+    command:
+      - "python"
+      - "/src/main.py"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - network
+
+  postgres:
+    container_name: postgres_con
+    build:
+      context: ./postgres
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - ./postgres/pg.env
+    ports:
+      - "2000:2000"
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
+    command:
+      - "postgres"
+      - "-c"
+      - "config_file=/var/lib/PostgresConfig/postgresql.conf"
+    networks:
+      - network
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-d", "postgres", "-p", "2000", "-h", "0.0.0.0" ]
+      interval: 5s
+      timeout: 10s
+      retries: 4
+      start_period: 10s
+
+
+networks:
+  network:
+    driver: bridge
